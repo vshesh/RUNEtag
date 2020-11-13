@@ -16,10 +16,8 @@
 
 #include <MarkPoint.h>
 
-#include "coding.h"
 
-
-#define M_PI 3.141592
+//#define M_PI 3.141592
 #define GAP_FACTOR 1.3
 #define RADIUS_RATIO 17.8
 #define ELLYSIZE (1/RADIUS_RATIO)
@@ -31,11 +29,11 @@ template <typename T>
 inline void showEllipsesInScene( const MarkPointSet<T>& point_set, QGraphicsScene& scene ) {
 
 	typename std::vector< MarkPoint<T> >::const_iterator it = point_set.begin();
-	
+
 	QBrush brush;
 	brush.setColor(Qt::black);
 	brush.setStyle( Qt::SolidPattern );
-	
+
 	unsigned int i=0;
 	while( it != point_set.end() ) {
 		if( it->enabled ) {
@@ -43,7 +41,7 @@ inline void showEllipsesInScene( const MarkPointSet<T>& point_set, QGraphicsScen
 		}
 		it++;
 		i++;
-        
+
         /*
 		if( i>3 )
 			return;*/
@@ -55,7 +53,7 @@ RUNETagGenerator::RUNETagGenerator(QGraphicsScene& _scene, QWidget *parent )
     : scene(_scene), QMainWindow(parent), curr_tag_idx(-1)
 {
     ui.setupUi(this);
-    
+
 }
 
 
@@ -73,7 +71,7 @@ void RUNETagGenerator::on_actionLoad_tags_triggered()
     tagsdb.clear();
     curr_tag_idx = -1;
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open Tags definition file"), "",  tr("Files (*.*)"));
-    
+
     // Load tags file
     std::string file_string( fileName.toLatin1().constData() );
     std::ifstream ifs(file_string.c_str());
@@ -86,14 +84,14 @@ void RUNETagGenerator::on_actionLoad_tags_triggered()
 
     ui.crTextEdit->appendPlainText( QString::number( tagsdb.size() ) + " tags loaded.");
 
-    
+
     alpha = ELLYSIZE * 2.0 * GAP_FACTOR;
     num_slots_for_layer = floor( 2.0 * M_PI / alpha );
     const int num_layers = NUM_LAYERS;
     num_slots = num_slots_for_layer*num_layers;
     alpha = 2.0 * M_PI / num_slots_for_layer;
     mark_point_set.clear();
-    
+
 
     for( int i=0; i<num_slots_for_layer; i++ ) {
         for( int currLayer = 0; currLayer < num_layers; currLayer++ ) {
@@ -102,13 +100,13 @@ void RUNETagGenerator::on_actionLoad_tags_triggered()
             MarkPoint<double> curr_ellipse( radius*cos(angle), radius*sin(angle), angle, ELLYSIZE*radius, currLayer );
             curr_ellipse.enabled = false;
             mark_point_set.addPoint( curr_ellipse );
-        } 
+        }
     }
 
 }
 
 
-void RUNETagGenerator::createMark() 
+void RUNETagGenerator::createMark()
 {
 
     scene.clear();
@@ -117,12 +115,12 @@ void RUNETagGenerator::createMark()
 
     if( curr_tag_idx >= tagsdb.size() )
         return;
-    
+
     ui.crTextEdit->appendPlainText( "Radius ratio: " + QString::number( RADIUS_RATIO ) );
     ui.crTextEdit->appendPlainText( "Ellipse size (at external layer): " + QString::number( ELLYSIZE*ui.markerSize->value() ) + " mm.");
     ui.crTextEdit->appendPlainText( "Num slots: " + QString::number( num_slots ) );
 
-    
+
 
     ui.crTextEdit->appendPlainText( "Code: " );
     size_t kk=0;
@@ -132,15 +130,15 @@ void RUNETagGenerator::createMark()
         kk+=3;
     }
 
-    
+
 	size_t n_ellipses=0;
-    for( unsigned int i=0; i<129; i++ ) 
+    for( unsigned int i=0; i<129; i++ )
     {
         mark_point_set.pointAt( i ).enabled = tagsdb[curr_tag_idx].bcode[i];
 		n_ellipses += mark_point_set.pointAt( i ).enabled ? 1 : 0;
     }
 	ui.crTextEdit->appendPlainText( QString::number( n_ellipses ) + " total dots" );
-    
+
 
     /*
     if( !ui.fullMarkerCheckBox->isChecked() ) {
@@ -221,7 +219,7 @@ void RUNETagGenerator::renderScene()
 }
 
 
-void RUNETagGenerator::on_nextCodeButton_clicked() 
+void RUNETagGenerator::on_nextCodeButton_clicked()
 {
 	if( tagsdb.empty() )
 		return;
@@ -232,20 +230,20 @@ void RUNETagGenerator::on_nextCodeButton_clicked()
     renderScene();
 }
 
-void RUNETagGenerator::on_showAxisCheckBox_stateChanged( int state ) 
+void RUNETagGenerator::on_showAxisCheckBox_stateChanged( int state )
 {
     renderScene();
 }
-void RUNETagGenerator::on_showSlotsCheckBox_stateChanged( int state ) 
+void RUNETagGenerator::on_showSlotsCheckBox_stateChanged( int state )
 {
     renderScene();
 }
-void RUNETagGenerator::on_fullMarkerCheckBox_stateChanged( int state ) 
+void RUNETagGenerator::on_fullMarkerCheckBox_stateChanged( int state )
 {
     renderScene();
 }
 
-void RUNETagGenerator::on_actionAbout_triggered() 
+void RUNETagGenerator::on_actionAbout_triggered()
 {
     QMessageBox::about ( this, tr("About"), tr("RUNETag Generator v.2") ) ;
 }
@@ -285,7 +283,7 @@ void RUNETagGenerator::on_actionPrint_triggered()
     scene.render( &painter, target, scene.sceneRect(), Qt::KeepAspectRatio );
 
     ui.statusBar->showMessage( tr("Mark successfully exported") );
-	
+
 
     //Export descriptor
     QString desc_filename = QFileDialog::getSaveFileName( this, "Export descriptor", ui.markerName->text(),tr("Text File (*.txt)") );

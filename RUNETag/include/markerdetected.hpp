@@ -48,21 +48,21 @@ class MarkerDetected
 private:
 
     std::vector< Slot > code;
-       
+
     const DigitalMarkerModel* model;
     cv::Matx33d VR;
     unsigned int num_layers;
 
     // Creates an instance of MarkerDetected, private factory
     // allowing only SlotFitter to create instances
-    static MarkerDetected createDetectedMarker( unsigned int _num_layers) 
-    { 
-        MarkerDetected marker; 
-        marker.offset = 0; 
+    static MarkerDetected createDetectedMarker( unsigned int _num_layers)
+    {
+        MarkerDetected marker;
+        marker.offset = 0;
         marker.num_discarded = 0;
         marker.num_errors = 0;
         marker.num_layers = _num_layers;
-        return marker; 
+        return marker;
     }
 
 public:
@@ -71,11 +71,11 @@ public:
     {
         friend class MarkerDetected;
     public:
-        const Slot& operator*() 
+        const Slot& operator*()
         {
             return md.code[idx];
         }
-        const Slot* operator->() 
+        const Slot* operator->()
         {
             return &(md.code[idx]);
         }
@@ -106,7 +106,7 @@ public:
     };
 
 
-    unsigned int offset; 
+    unsigned int offset;
     unsigned int num_errors;
     unsigned int num_discarded;
 
@@ -114,7 +114,7 @@ public:
     {
         return SlotIterator(*this,layer,layer,getNumLayers());
     }
-    SlotIterator end_by_layer( int layer ) const 
+    SlotIterator end_by_layer( int layer ) const
     {
         return SlotIterator(*this,layer,-1,getNumLayers());
     }
@@ -123,17 +123,17 @@ public:
     {
         return SlotIterator(*this,-1,0,1);
     }
-    SlotIterator end( ) const 
+    SlotIterator end( ) const
     {
         return SlotIterator(*this,-1,-1,1);
     }
 
-    inline unsigned int getNumSymbols() const 
+    inline unsigned int getNumSymbols() const
     {
         unsigned int n = 0;
-        for( std::vector< Slot >::const_iterator it = code.begin(); it != code.end(); it++ ) 
+        for( std::vector< Slot >::const_iterator it = code.begin(); it != code.end(); it++ )
         {
-            if( it->value() ) 
+            if( it->value() )
             {
                 n++;
             }
@@ -141,12 +141,12 @@ public:
         return n;
     }
 
-    inline unsigned int getNumFilledSlots() const 
+    inline unsigned int getNumFilledSlots() const
     {
         unsigned int n = 0;
-        for( std::vector< Slot >::const_iterator it = code.begin(); it != code.end(); it++ ) 
+        for( std::vector< Slot >::const_iterator it = code.begin(); it != code.end(); it++ )
         {
-            if( it->getPayload() ) 
+            if( it->getPayload() )
             {
                 n++;
             }
@@ -154,7 +154,7 @@ public:
         return n;
     }
 
-    inline std::vector<unsigned int> getNumSymbolsPerLayer() const 
+    inline std::vector<unsigned int> getNumSymbolsPerLayer() const
     {
         std::vector<unsigned int> spl( getNumLayers(),0);
         for( size_t l = 0; l<getNumLayers(); ++l )
@@ -201,11 +201,11 @@ public:
     }
 
 
-    inline void refine( const cv::Mat& gradient_x, const cv::Mat& gradient_y, const cv::Mat& intrinsics ) 
+    inline void refine( const cv::Mat& gradient_x, const cv::Mat& gradient_y, const cv::Mat& intrinsics )
     {
-		throw std::runtime_error("NOT IMPLEMENTED");
+		throw std::exception();
         /*
-		for( unsigned int i=0; i<code.size(); i++ ) 
+		for( unsigned int i=0; i<code.size(); i++ )
         {
             if( code[i].value() )
                 code[i].getPayload()->refine( gradient_x, gradient_y, intrinsics );
@@ -213,40 +213,40 @@ public:
 		*/
     }
 
-    inline unsigned int getNumSlots() const 
-    { 
-        return (unsigned int)code.size(); 
-    }
-    
-    inline const Slot& getSlot( unsigned int index ) const 
-    { 
-        return code[ (index+offset) % code.size() ]; 
-    }
-    
-    inline const void invalidateSlot( unsigned int index ) 
+    inline unsigned int getNumSlots() const
     {
-        code[ (index+offset) % code.size() ].invalidate(); 
-    }
-    
-    inline bool isExternal( unsigned int index ) const 
-    { 
-        return (((index+offset) % code.size() +1)%getNumLayers())==0; 
-    }
-    
-    inline const DigitalMarkerModel* associatedModel() const 
-    { 
-        return model; 
-    }
-    
-    inline const cv::Matx33d& getVR() const 
-    { 
-        return VR; 
+        return (unsigned int)code.size();
     }
 
-    inline void associateModel( const DigitalMarkerModel * model, unsigned int offset) 
-    { 
-        this->model = model; 
-        this->offset=offset; 
+    inline const Slot& getSlot( unsigned int index ) const
+    {
+        return code[ (index+offset) % code.size() ];
+    }
+
+    inline const void invalidateSlot( unsigned int index )
+    {
+        code[ (index+offset) % code.size() ].invalidate();
+    }
+
+    inline bool isExternal( unsigned int index ) const
+    {
+        return (((index+offset) % code.size() +1)%getNumLayers())==0;
+    }
+
+    inline const DigitalMarkerModel* associatedModel() const
+    {
+        return model;
+    }
+
+    inline const cv::Matx33d& getVR() const
+    {
+        return VR;
+    }
+
+    inline void associateModel( const DigitalMarkerModel * model, unsigned int offset)
+    {
+        this->model = model;
+        this->offset=offset;
     }
 
 };

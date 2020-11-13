@@ -30,7 +30,7 @@
 #include <opencv2/core/core.hpp>
 #include "ellipserefine.hpp"
 #include <iostream>
-#include <highgui.h>
+#include <opencv2/highgui/highgui.hpp>
 #include <iostream>
 #include "ellipsedetector.hpp"
 #include "../include/auxrenderer.hpp"

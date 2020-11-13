@@ -1,18 +1,18 @@
 /**
 * The MIT License (MIT)
-* 
-* Copyright (c) 2015 Filippo Bergamasco 
-* 
+*
+* Copyright (c) 2015 Filippo Bergamasco
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in
 * all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -57,9 +57,9 @@ namespace RUNEtagdetect
 
 
 
-void RUNEtagdetect::test::occlusions::test_occlusions( const cv::runetag::MarkerDetected& tag, 
-													   unsigned int ntests, 
-													   bool interactive, 
+void RUNEtagdetect::test::occlusions::test_occlusions( const cv::runetag::MarkerDetected& tag,
+													   unsigned int ntests,
+													   bool interactive,
 													   std::string out_file,
 													   cv::Mat input_img )
 {
@@ -114,11 +114,11 @@ void RUNEtagdetect::test::occlusions::test_occlusions( const cv::runetag::Marker
 				{
 					bcode[idx] = tag.getSlot(idx).value();
 					point_added.push_back( rr.center );
-				} else 
+				} else
 				{
 					point_occluded.push_back( rr.center );
 				}
-			}			
+			}
 		}
 
 
@@ -159,19 +159,19 @@ void RUNEtagdetect::test::occlusions::test_occlusions( const cv::runetag::Marker
 		{
 			cv::Mat dbgimg = input_img.clone();
 			
-			// Draw bbox 
-			cv::rectangle( dbgimg, cv::Point(bbox_xmin,bbox_ymin), cv::Point(bbox_xmax,bbox_ymax),CV_RGB(255,0,0),1,CV_AA);
+			// Draw bbox
+			cv::rectangle( dbgimg, cv::Point(bbox_xmin,bbox_ymin), cv::Point(bbox_xmax,bbox_ymax),CV_RGB(255,0,0),1,cv::LINE_AA);
 
 			// Draw occlusion box
-			cv::rectangle( dbgimg, occlusionbox,CV_RGB(255,255,0),CV_FILLED,CV_AA);
+			cv::rectangle( dbgimg, occlusionbox,CV_RGB(255,255,0), cv::FILLED, cv::LINE_AA);
 
 			for( std::vector< cv::Point >::const_iterator it=point_added.begin(); it!=point_added.end(); ++it )
 			{
-				cv::circle( dbgimg, *it, 5, CV_RGB(0,255,0),CV_FILLED, CV_AA );
+				cv::circle( dbgimg, *it, 5, CV_RGB(0,255,0), cv::FILLED, cv::LINE_AA );
 			}
 			for( std::vector< cv::Point >::const_iterator it=point_occluded.begin(); it!=point_occluded.end(); ++it )
 			{
-				cv::circle( dbgimg, *it, 5, CV_RGB(255,0,0),CV_FILLED, CV_AA );
+				cv::circle( dbgimg, *it, 5, CV_RGB(255,0,0), cv::FILLED, cv::LINE_AA );
 			}
 
 			cv::Mat dbgimg_scaled;

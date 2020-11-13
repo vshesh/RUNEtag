@@ -3,19 +3,19 @@
 *
 * -----------------------------------------------------------------------------
 * The MIT License (MIT)
-* 
-* Copyright (c) 2015 Filippo Bergamasco 
-* 
+*
+* Copyright (c) 2015 Filippo Bergamasco
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in
 * all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -31,7 +31,7 @@
 
 using namespace cv::runetag;
 
-unsigned int EllipseDetector::detectEllipses( const cv::Mat& frame, std::vector< cv::RotatedRect >& detected ) 
+unsigned int EllipseDetector::detectEllipses( const cv::Mat& frame, std::vector< cv::RotatedRect >& detected )
 {
     
     unsigned int num_detected = 0;
@@ -41,23 +41,23 @@ unsigned int EllipseDetector::detectEllipses( const cv::Mat& frame, std::vector<
 
     // Conversion of the RGB image to GRAYSCALE
     cv::Mat grayframe( frame.rows, frame.cols, CV_8UC1 );
-    cv::cvtColor( frame, grayframe, CV_RGB2GRAY );
+    cv::cvtColor( frame, grayframe, COLOR_RGB2GRAY );
 
     //cv::adaptiveThreshold( grayframe, aux, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 127 , 30);
     //cv::threshold( grayframe, aux, 100 , 255, cv::THRESH_BINARY );
     // Threshold
     cv::Mat thresholded;
-    cv::adaptiveThreshold( grayframe, thresholded, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 127 , 15);
+    cv::adaptiveThreshold( grayframe, thresholded, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 127 , 15);
 
     // Detect image contours as a vector of Point
     std::vector< std::vector< cv::Point > > contours;
     std::vector< cv::Vec4i > h;
-    cv::findContours( thresholded, contours, h, CV_RETR_LIST, CV_CHAIN_APPROX_NONE );
+    cv::findContours( thresholded, contours, h, RETR_LIST, CHAIN_APPROX_NONE );
 
-    for( std::vector< std::vector< cv::Point > >::const_iterator it = contours.begin(); it != contours.end(); ++it ) 
+    for( std::vector< std::vector< cv::Point > >::const_iterator it = contours.begin(); it != contours.end(); ++it )
     {
         const std::vector< cv::Point > &cont = *it;
-        if( cont.size() < min_ellipse_contour_points || cont.size() > max_ellipse_contour_points ) 
+        if( cont.size() < min_ellipse_contour_points || cont.size() > max_ellipse_contour_points )
         {
             // If contour is greater or smaller than the specified soils
             // it's ignored
@@ -111,7 +111,7 @@ unsigned int EllipseDetector::detectEllipses( const cv::Mat& frame, std::vector<
         double mse=0.;
         double dk=0., dk1, dk2;
         int count = 0;
-        for( unsigned int i=0; i<cont.size(); i++ ) 
+        for( unsigned int i=0; i<cont.size(); i++ )
         {
             const cv::Point& p = cont[i];
             double contour_pt_x = p.x;
@@ -136,7 +136,7 @@ unsigned int EllipseDetector::detectEllipses( const cv::Mat& frame, std::vector<
         //if( ellipse.angle < 0.0 )
         //	ellipse.angle = 360.0-ellipse.angle;
         
-        while( ellipse.angle >= 360.0 ) 
+        while( ellipse.angle >= 360.0 )
         {
             ellipse.angle -= 360.0;
         }

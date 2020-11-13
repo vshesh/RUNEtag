@@ -5,9 +5,11 @@ SET( CMAKE_ALLOW_LOOSE_LOOP_CONSTRUCTS TRUE )
 
 PROJECT( RUNETag )
 
+
 OPTION( BUILD_SHARED_LIBS "Set to off to build static libraries" ON )
 OPTION( BUILD_RUNETAGDETECT "Create RUNEtagdetect executable" ON )
 OPTION( BUILD_CODEGEN "Create codegen executable" ON )
+
 
 IF( NOT CMAKE_BUILD_TYPE )
 	SET( CMAKE_BUILD_TYPE "Release" )
@@ -18,28 +20,23 @@ IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 SET( CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../dist" CACHE PATH "Install prefix" FORCE )
 ENDIF()
 
-
-#
-#	Dependencies
-#
-#FIND_PACKAGE( OpenCV REQUIRED PATHS OpenCV_DIR NO_DEFAULT_PATH)
-#IF(OpenCV_INCLUDE_DIRS)
-#	MESSAGE(STATUS "OpenCV include: ${OpenCV_INCLUDE_DIRS}")
-#	MESSAGE(STATUS "OpenCV library: ${OpenCV_LIB_DIR}")
-#	MESSAGE(STATUS " use OpenCV_DIR path variable to override")
-#ELSE(OpenCV_INCLUDE_DIRS)
-#	MESSAGE(FATAL_ERROR "OpenCV not found. Please set OpenCV_INCLUDE_DIRS and OpenCV_LIB_DIR path variables")
-#ENDIF(OpenCV_INCLUDE_DIRS)
+SET (CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
 FIND_PACKAGE (OpenCV REQUIRED)
 
-INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/include"
-					  ${OpenCV_INCLUDE_DIRS} 
-					   )
-					  
-INSTALL( DIRECTORY "${PROJECT_SOURCE_DIR}/include" DESTINATION . )
+ADD_SUBDIRECTORY( WinNTL )
 
-SET( RUNETAG_SRCS 
+
+INCLUDE_DIRECTORIES( "${PROJECT_SOURCE_DIR}/include"
+					  ${OpenCV_INCLUDE_DIRS}
+					  "WinNTL/include"
+					   )
+
+INSTALL( DIRECTORY "${PROJECT_SOURCE_DIR}/include" DESTINATION . )
+INSTALL( DIRECTORY "${PROJECT_SOURCE_DIR}/WinNTL/include" DESTINATION . )
+
+SET( RUNETAG_SRCS
 		auxmath.cpp
 		auxrenderer.cpp
 		ellipsefitter.cpp
@@ -55,8 +52,8 @@ SET( RUNETAG_SRCS
 		slot.cpp
 		coding.cpp
 		)
-	 
-SET( RUNETAG_INCL 
+
+SET( RUNETAG_INCL
 	  "include/auxmath.hpp"
 	  "include/auxrenderer.hpp"
 	  "include/digitalmarkermodel.hpp"
@@ -74,10 +71,10 @@ SET( RUNETAG_INCL
 	  "include/ellipsedetector.hpp"
 	  "include/runetag.hpp"
 	  "include/coding.h")
-	  
+
 
 ADD_LIBRARY( ${PROJECT_NAME} STATIC ${RUNETAG_SRCS} ${RUNETAG_INCL} )
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} ntl ${OpenCV_LIBS})
+TARGET_LINK_LIBRARIES(${PROJECT_NAME} WinNTL ${OpenCV_LIBS})
 SET_TARGET_PROPERTIES( ${PROJECT_NAME} PROPERTIES VERSION ${${PROJECT_NAME}_VERSION} SOVERSION ${${PROJECT_NAME}_SOVERSION} CLEAN_DIRECT_OUTPUT 1 OUTPUT_NAME ${PROJECT_NAME} )
 
 
@@ -105,5 +102,3 @@ MESSAGE( STATUS "CMAKE_BUILD_TYPE\t\t= ${CMAKE_BUILD_TYPE}  (Options: Release, D
 MESSAGE( STATUS )
 MESSAGE( STATUS "You can change this values with cmake -D<Variable>=<Value>" )
 MESSAGE( STATUS "------------------------------------------------" )
-
-

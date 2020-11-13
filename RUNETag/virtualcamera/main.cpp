@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 
-#include <cv.h>
-#include <highgui.h>
+#include <opencv/cv.h>
+#include <opencv2/highgui.hpp>
 #include "../include/ImgTextStream.hpp"
 #include "VirtualCamera.h"
 
@@ -23,7 +23,7 @@
 
 
 int run_interactive_mode() {
-    
+
     std::cout << "Loading source image" << std::endl;
 
     IplImage* src_img = cvLoadImage( IMG_FILENAME );
@@ -37,11 +37,11 @@ int run_interactive_mode() {
     bool running=true;
     bool overlay=true;
     while( running ) {
-        
+
         //cv::Mat dst;
         std::cout << "Rendering...";
         vcam->snap();
-        
+
         /*
         if( overlay ) {
             cvExt::its( dst ) << "T: " << T.at<double>(0,0) << " ; " << T.at<double>(1,0) << " ; " << T.at<double>(2,0) << cvExt::newline
@@ -58,7 +58,7 @@ int run_interactive_mode() {
             running = false;
             break;
         }
-        
+
         switch( code ) {
             case KEY_UP:
                 vcam->translate(0.0, 10.0, 0.0 );
@@ -94,11 +94,11 @@ int run_interactive_mode() {
                 std::cout << "Unknown code: " << code << std::endl;
                 break;
         }
-        
-        
+
+
     }
-	
-	
+
+
 	// Release the capture device housekeeping
 	cvDestroyWindow( "image" );
 	return 0;

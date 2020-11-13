@@ -3,19 +3,19 @@
 *
 * -----------------------------------------------------------------------------
 * The MIT License (MIT)
-* 
-* Copyright (c) 2015 Filippo Bergamasco 
-* 
+*
+* Copyright (c) 2015 Filippo Bergamasco
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in
 * all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -31,6 +31,7 @@
 
 //#include "precomp.hpp"
 #include <opencv2/opencv.hpp>
+#include <opencv2/fuzzy/types.hpp>
 #include "markerdetected.hpp"
 
 
@@ -42,7 +43,7 @@ namespace runetag
     const unsigned int FLAG_REFINE = 2;
 
     /// <summary> Camera pose as a transformation from camera coordinates to world coordinates </summary>
-    struct Pose 
+    struct Pose
     {
         /// <value> Rotation matrix </value>
         cv::Mat R;
@@ -50,7 +51,7 @@ namespace runetag
         cv::Mat t;
     };
 
-    extern Pose findPose( const MarkerDetected& detected, const cv::Mat& intrinsics, const cv::Mat& distortion, bool* pose_ok = 0, unsigned int method=CV_ITERATIVE, unsigned int flag = 0 );
+    extern Pose findPose( const MarkerDetected& detected, const cv::Mat& intrinsics, const cv::Mat& distortion, bool* pose_ok = 0, unsigned int method=ft::ITERATIVE, unsigned int flag = 0 );
 
 } // namespace runetag
 } // namespace cv

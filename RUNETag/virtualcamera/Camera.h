@@ -1,7 +1,7 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
 
-#include <cv.h>
+#include <opencv/cv.h>
 
 class Camera {
 

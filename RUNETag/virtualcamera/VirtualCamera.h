@@ -2,14 +2,14 @@
 #define _VIRTUAL_CAMERA_H
 
 
-#include <cv.h>
+#include <opencv/cv.h>
 
 
 
 namespace cvlab {
 
     class VirtualCameraImpl;
-    class VirtualCamera 
+    class VirtualCamera
     {
 
     public:
@@ -32,7 +32,7 @@ namespace cvlab {
         cv::Mat img;
         cv::Mat snapshot;
         VirtualCameraImpl* pImpl;
-        
+
     };
 
 }

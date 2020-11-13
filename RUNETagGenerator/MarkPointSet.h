@@ -43,7 +43,7 @@ public:
 		const MarkPoint<T>& origin = points.at( p_index );
 		if( &quad.p1 == &origin || &quad.p2 == &origin || &quad.p3 == &origin || &quad.p4 == &origin )
 			return std::complex<T>(0.0,0.0);
-		
+
 		std::complex<T> p1=quad.p1.coords;
 		std::complex<T> p2=quad.p2.coords;
 		std::complex<T> p3=quad.p3.coords;
@@ -56,7 +56,7 @@ public:
 		const MarkPoint<T>& origin = points.at( p_index );
 		if( &quad.p1 == &origin || &quad.p2 == &origin || &quad.p3 == &origin || &quad.p4 == &origin )
 			return std::complex<T>(0.0,0.0);
-		
+
 		T sin12 = MarkPoint<T>::sin_angle( quad.p1, origin, quad.p2 );
 		T sin24 = MarkPoint<T>::sin_angle( quad.p2, origin, quad.p4 );
 		T sin13 = MarkPoint<T>::sin_angle( quad.p1, origin, quad.p3 );
@@ -90,18 +90,18 @@ public:
 
         bool valid = true;
         while( it != end() ) {
-	  if( it->distanceTo( p ) < 1 /*threshold*/ ) {
+            if( it->distanceTo( p ) < 1 /* threshold */) {
                 valid = false;
                 break;
             }
             it++;
         }
-        if( valid ) 
+        if( valid )
             addPoint( p );
 
         return valid;
     }
-	
+
 	unsigned int numPoints() const {
 		return points.size();
 	}
@@ -155,7 +155,7 @@ private:
 };
 
 template <typename T>
-class MarkPointQuadruple 
+class MarkPointQuadruple
 {
 friend class MarkPointSet<T>;
 public:

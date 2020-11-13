@@ -1,18 +1,18 @@
 /**
 * The MIT License (MIT)
-* 
-* Copyright (c) 2015 Filippo Bergamasco 
-* 
+*
+* Copyright (c) 2015 Filippo Bergamasco
+*
 * Permission is hereby granted, free of charge, to any person obtaining a copy
 * of this software and associated documentation files (the "Software"), to deal
 * in the Software without restriction, including without limitation the rights
 * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 * copies of the Software, and to permit persons to whom the Software is
 * furnished to do so, subject to the following conditions:
-* 
+*
 * The above copyright notice and this permission notice shall be included in
 * all copies or substantial portions of the Software.
-* 
+*
 * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -25,6 +25,8 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/calib3d.hpp>
+#include <opencv2/core/core_c.h>
 
 #include <boost/program_options.hpp>
 #include <iostream>
@@ -105,7 +107,7 @@ int main (int argc, char** argv)
     po::options_description input_opts("Input");
     input_opts.add_options()
         ("config",po::value< std::string >(),"config filename")
-        ("dir",po::value< std::string >(),"data directory")  
+        ("dir",po::value< std::string >(),"data directory")
         ("img",po::value< std::string >(),"image filename")
         ("m",po::value< std::vector<std::string> >(),"tag model file (this option can be repeated many times)")
         ("f",po::value< double >(),"focal length (both fx and fy)")
@@ -177,7 +179,7 @@ int main (int argc, char** argv)
             if( ifs.fail() )
             {
                 std::cout << "Unable to open " << config_filename << std::endl;
-            } else 
+            } else
             {
                 po::store( po::parse_config_file(ifs, cmdline_options ), varmap );
                 ifs.close();
@@ -187,7 +189,7 @@ int main (int argc, char** argv)
         po::notify(varmap);
 
 
-        if (argc == 1 || varmap.count("help")) 
+        if (argc == 1 || varmap.count("help"))
         {
             std::cout << cmdline_options << "\n";
             return 1;
@@ -239,47 +241,47 @@ int main (int argc, char** argv)
         intrinsics = cv::Mat::eye(3,3,CV_64FC1);
 
 		
-		if( varmap.count("intrinsicsfile") )
-        {
-			std::string intrinsics_filename = varmap["intrinsicsfile"].as<std::string>();
-			try {
-				intrinsics = cv::cvarrToMat( cvLoad( intrinsics_filename.c_str() ), true );				
-			} catch( cv::Exception e ) {
-				std::cout << "Unable to load " << intrinsics_filename << ", aborting" << std::endl;
-				return -1;
-			}
-		} 
-		else 
-		{
+		// if( varmap.count("intrinsicsfile") )
+    //     {
+		// 	std::string intrinsics_filename = varmap["intrinsicsfile"].as<std::string>();
+		// 	try {
+		// 		intrinsics = cvarrToMat( cvLoad( intrinsics_filename.c_str() ), true );
+		// 	} catch( cv::Exception e ) {
+		// 		std::cout << "Unable to load " << intrinsics_filename << ", aborting" << std::endl;
+		// 		return -1;
+		// 	}
+		// }
+		// else
+		// {
 			if( varmap.count("f") )
 			{
-				intrinsics.at<double>(0,0) = intrinsics.at<double>(1,1) = varmap["f"].as<double>();        
+				intrinsics.at<double>(0,0) = intrinsics.at<double>(1,1) = varmap["f"].as<double>();
 			}
 			if( varmap.count("fx") )
 			{
-				intrinsics.at<double>(0,0) = varmap["fx"].as<double>();        
+				intrinsics.at<double>(0,0) = varmap["fx"].as<double>();
 			}
 			if( varmap.count("fy") )
 			{
-				intrinsics.at<double>(1,1) = varmap["fy"].as<double>();             
+				intrinsics.at<double>(1,1) = varmap["fy"].as<double>();
 			}
 			if( varmap.count("cx") )
 			{
-				intrinsics.at<double>(0,2) = varmap["cx"].as<double>();        
-			} else 
+				intrinsics.at<double>(0,2) = varmap["cx"].as<double>();
+			} else
 			{
 				std::cout << "- cx not set, assuming image.cols/2" << std::endl;
 				intrinsics.at<double>(0,2) = input_image.cols/2.0;
 			}
 			if( varmap.count("cy") )
 			{
-				intrinsics.at<double>(1,2) = varmap["cy"].as<double>();             
-			} else 
+				intrinsics.at<double>(1,2) = varmap["cy"].as<double>();
+			} else
 			{
 				std::cout << "- cy not set, assuming image.rows/2" << std::endl;
 				intrinsics.at<double>(1,2) = input_image.rows/2.0;
 			}
-		}
+		//}
 
         
         std::cout << "+ Camera intrinsics: " << std::endl;
@@ -290,18 +292,18 @@ int main (int argc, char** argv)
 
 
 		cv::Mat distortion;
-		if( varmap.count("distortionfile") )
-        {
-			std::string distortion_filename = varmap["distortionfile"].as<std::string>();
-			try {
-				distortion = cv::cvarrToMat( cvLoad( distortion_filename.c_str() ), true );
-				
-				std::cout << "+ Distortion coefficients: " << std::endl;
-				std::cout << "    " << distortion << std::endl;
-			} catch( cv::Exception e ) {
-				std::cout << "Unable to load " << distortion_filename << ", skipping" << std::endl;
-			}
-		}
+		// if( varmap.count("distortionfile") )
+    //     {
+		// 	std::string distortion_filename = varmap["distortionfile"].as<std::string>();
+		// 	try {
+		// 		distortion = cvarrToMat( cvLoad( distortion_filename.c_str() ), true );
+    //
+		// 		std::cout << "+ Distortion coefficients: " << std::endl;
+		// 		std::cout << "    " << distortion << std::endl;
+		// 	} catch( cv::Exception e ) {
+		// 		std::cout << "Unable to load " << distortion_filename << ", skipping" << std::endl;
+		// 	}
+		// }
 
 		if( distortion.rows!=0 && distortion.cols!=0 )
 		{
@@ -311,7 +313,7 @@ int main (int argc, char** argv)
 			input_image = input_image_undistorted;
 		}
 
-        pDetector = new cv::runetag::MarkerDetector( intrinsics );        
+        pDetector = new cv::runetag::MarkerDetector( intrinsics );
         
         if( varmap.count("m") )
         {
@@ -324,10 +326,10 @@ int main (int argc, char** argv)
                 
                 std::cout << "  " << model_name << " ";
 
-                try 
+                try
                 {
                     std::cout << " " << pDetector->addModelsFromFile( model_name ) <<  " loaded" << std::endl;
-                } catch( cv::runetag::DigitalMarkerModel::MarkerModelLoadException& ex ) 
+                } catch( cv::runetag::DigitalMarkerModel::MarkerModelLoadException& ex )
                 {
                     std::cout << std::endl << ex.what() << std::endl;
                     return -1;
@@ -336,7 +338,7 @@ int main (int argc, char** argv)
             std::cout << std::endl;
 
 
-        } else 
+        } else
         {
             std::cout << "Error: you must specify at least one model file" << std::endl;
             return -1;
@@ -411,13 +413,13 @@ int main (int argc, char** argv)
 
     // Detect ellipses
     std::vector< RotatedRect > foundEllipses;
-    runetag::EllipseDetector ellipseDetector( min_ellipse_contour_points, 
-        max_ellipse_contour_points, 
+    runetag::EllipseDetector ellipseDetector( min_ellipse_contour_points,
+        max_ellipse_contour_points,
         min_ellipse_area,
-        max_ellipse_area, 
-        min_roundness, 
-        max_mse, 
-        size_compensation);    
+        max_ellipse_area,
+        min_roundness,
+        max_mse,
+        size_compensation);
 
 
     std::cout << "> Detecting ellipses" << std::endl;
@@ -433,7 +435,7 @@ int main (int argc, char** argv)
         {
             cv::RotatedRect rr = foundEllipses[i];
             rr.angle=-rr.angle;
-            cv::ellipse( dbgout, rr, CV_RGB(255,0,0),1,CV_AA );
+            cv::ellipse( dbgout, rr, CV_RGB(255,0,0),1, LINE_AA );
         }
 
         std::cout << "> Rendering ellipses" << std::endl;
@@ -462,7 +464,7 @@ int main (int argc, char** argv)
 
 		// Sobel
 		cv::Mat input_image_gray;
-		cv::cvtColor( input_image, input_image_gray, CV_RGB2GRAY );
+		cv::cvtColor( input_image, input_image_gray, COLOR_RGB2GRAY );
 
 		cv::Mat input_image_smooth;
 		if( gauss_smooth_sigma > 0.0f )
@@ -485,7 +487,7 @@ int main (int argc, char** argv)
 		cv::waitKey(0);*/
 		
 		cv::Mat dbgimg;
-		cv::cvtColor( input_image_smooth,dbgimg,CV_GRAY2RGB );
+		cv::cvtColor( input_image_smooth,dbgimg,COLOR_GRAY2RGB );
 		
 		size_t num_refined = 0;
 		for( size_t i=0; i<tags_found.size(); ++i )
@@ -503,7 +505,7 @@ int main (int argc, char** argv)
 			}
 		}
 
-		/*		
+		/*
 		cv::imshow("refined",dbgimg);
 		cv::waitKey(0);*/
 		std::cout << "  " << num_refined << " refined. " << std::endl << std::endl;
@@ -541,13 +543,13 @@ int main (int argc, char** argv)
 		if(pnprefine)
 			flags |= cv::runetag::FLAG_REFINE;
 
-		cv::runetag::Pose RT = cv::runetag::findPose( tags_found[i], intrinsics, distortion, &poseok, method==0?CV_ITERATIVE:CV_EPNP, flags);
+		cv::runetag::Pose RT = cv::runetag::findPose( tags_found[i], intrinsics, distortion, &poseok, method==0? SOLVEPNP_ITERATIVE : SOLVEPNP_EPNP, flags);
 
         if( poseok )
         {
             poses[i]=RT;
-            std::cout << " OK! R(rodriguez):  [" << RT.R.at<double>(0,0) << " ; " << RT.R.at<double>(1,0) << " ; " << RT.R.at<double>(2,0) << "]" << std::endl;        
-            std::cout << "                     T:  [" << RT.t.at<double>(0,0) << " ; " << RT.t.at<double>(1,0) << " ; " << RT.t.at<double>(2,0) << "]" << std::endl;        
+            std::cout << " OK! R(rodriguez):  [" << RT.R.at<double>(0,0) << " ; " << RT.R.at<double>(1,0) << " ; " << RT.R.at<double>(2,0) << "]" << std::endl;
+            std::cout << "                     T:  [" << RT.t.at<double>(0,0) << " ; " << RT.t.at<double>(1,0) << " ; " << RT.t.at<double>(2,0) << "]" << std::endl;
         } else
         {
             std::cout << " Error." << std::endl;
@@ -566,10 +568,10 @@ int main (int argc, char** argv)
 
         for( size_t i=0; i<tags_found.size(); ++i )
         {
-            if( poses.find(i)!=poses.end()) 
+            if( poses.find(i)!=poses.end())
             {
                 cv::runetag::AuxRenderer::drawDetectedMarker3DCylinder2(dbgout,tags_found[i],poses[i],intrinsics,distortion);
-            }            
+            }
         }
         
         cv::imwrite( tagsimg_filename, dbgout );
@@ -596,14 +598,14 @@ int main (int argc, char** argv)
                         cv::Point2d point2d = tags_found[i].getSlot(slot).getPayload()->getCenter() + cv::Point2d(intrinsics.at<double>(0,2),intrinsics.at<double>(1,2));
 
                         ofs << tags_found[i].associatedModel()->getIDX() << "\t" << slot << "\t" << point3d.x << "\t" << point3d.y << "\t" << "0" << "\t" << point2d.x << "\t" << point2d.y << std::endl;
-                    }                    
+                    }
                 }
             }
             ofs.flush();
             ofs.close();
 
 
-        } else 
+        } else
         {
             std::cout << "Error: Unable to open file" << std::endl;
 
@@ -643,7 +645,7 @@ int main (int argc, char** argv)
             ofs.flush();
             ofs.close();
 
-        } else 
+        } else
         {
             std::cout << "Error: Unable to open file" << std::endl;
 
