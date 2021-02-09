@@ -91,7 +91,7 @@ CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
 CMAKE_INSTALL_NAME_TOOL:FILEPATH=/usr/bin/install_name_tool
 
 //Install prefix
-CMAKE_INSTALL_PREFIX:PATH=/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/../../dist
+CMAKE_INSTALL_PREFIX:PATH=/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/../dist
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=/Library/Developer/CommandLineTools/usr/bin/ld

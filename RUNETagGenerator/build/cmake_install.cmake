@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/../../dist")
+  set(CMAKE_INSTALL_PREFIX "/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/../dist")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

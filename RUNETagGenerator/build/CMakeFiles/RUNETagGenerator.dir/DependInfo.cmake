@@ -28,7 +28,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "."
   "../"
   "RUNETagGenerator_autogen/include"
-  "../../../dist/include"
+  "../../dist/include"
   "/usr/local/Cellar/opencv/4.5.0_3/include/opencv4"
   "/usr/local/Cellar/qt/5.15.1/lib/QtWidgets.framework"
   "/usr/local/Cellar/qt/5.15.1/lib/QtWidgets.framework/Headers"

@@ -232,8 +232,8 @@ RUNETagGenerator: /usr/local/lib/libopencv_viz.4.5.0.dylib
 RUNETagGenerator: /usr/local/lib/libopencv_xfeatures2d.4.5.0.dylib
 RUNETagGenerator: /usr/local/lib/libopencv_xobjdetect.4.5.0.dylib
 RUNETagGenerator: /usr/local/lib/libopencv_xphoto.4.5.0.dylib
-RUNETagGenerator: ../../../RUNETag/build/libRUNETag.a
-RUNETagGenerator: ../../../RUNETag/build/WinNTL/libWinNTL.a
+RUNETagGenerator: ../../dist/lib/libRUNETag.a
+RUNETagGenerator: ../../dist/lib/libWinNTL.a
 RUNETagGenerator: /usr/local/Cellar/qt/5.15.1/lib/QtWidgets.framework/QtWidgets
 RUNETagGenerator: /usr/local/Cellar/qt/5.15.1/lib/QtGui.framework/QtGui
 RUNETagGenerator: /usr/local/Cellar/qt/5.15.1/lib/QtCore.framework/QtCore

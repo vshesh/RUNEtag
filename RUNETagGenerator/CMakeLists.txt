@@ -8,7 +8,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/../cmake/Modul
 # Setup default installation dir
 #
 IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-SET( CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../../dist" CACHE PATH "Install prefix" FORCE )
+SET( CMAKE_INSTALL_PREFIX "${PROJECT_SOURCE_DIR}/../dist" CACHE PATH "Install prefix" FORCE )
 ENDIF()
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -76,7 +76,7 @@ QT5_ADD_RESOURCES (ResourceSources
 			       runetaggenerator.qrc)
 
 INCLUDE_DIRECTORIES(
-					 "${PROJECT_SOURCE_DIR}/../../dist/include"
+					 "${PROJECT_SOURCE_DIR}/../dist/include"
 				     ${OpenCV_INCLUDE_DIRS}
 					 )
 #                     ${LIBMULTISPEC_CONF_INCLUDE_DIR}
@@ -110,8 +110,8 @@ add_executable(RUNETagGenerator WIN32
 
 target_link_libraries(RUNETagGenerator Qt5::Widgets Qt5::Gui Qt5::PrintSupport
 								 ${OpenCV_LIBS}
-								 "${PROJECT_SOURCE_DIR}/../../RUNETag/build/libRUNETag.a"
-								 "${PROJECT_SOURCE_DIR}/../../RUNETag/build/WinNTL/libWinNTL.a"
+								 "${PROJECT_SOURCE_DIR}/../dist/lib/libRUNETag.a"
+								 "${PROJECT_SOURCE_DIR}/../dist/lib/libWinNTL.a"
 								 #${Boost_LIBRARIES}
 								 #${QWT_LIBRARY}
 								 #${POCO_FOUNDATION_LIBRARY}
