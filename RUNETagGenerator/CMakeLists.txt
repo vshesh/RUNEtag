@@ -18,7 +18,7 @@ endif()
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 
-FIND_PACKAGE( OpenCV REQUIRED PATHS OpenCV_DIR NO_DEFAULT_PATH)
+FIND_PACKAGE (OpenCV REQUIRED)
 
 #IF(OpenCV_INCLUDE_DIRS)
 #	MESSAGE(STATUS "OpenCV include: ${OpenCV_INCLUDE_DIRS}")
@@ -110,8 +110,8 @@ add_executable(RUNETagGenerator WIN32
 
 target_link_libraries(RUNETagGenerator Qt5::Widgets Qt5::Gui Qt5::PrintSupport
 								 ${OpenCV_LIBS}
-								 "${PROJECT_SOURCE_DIR}/../../dist/lib/libRUNETag.lib"
-								 "${PROJECT_SOURCE_DIR}/../../dist/lib/WinNTL.lib"
+								 "${PROJECT_SOURCE_DIR}/../../RUNETag/build/libRUNETag.a"
+								 "${PROJECT_SOURCE_DIR}/../../RUNETag/build/WinNTL/libWinNTL.a"
 								 #${Boost_LIBRARIES}
 								 #${QWT_LIBRARY}
 								 #${POCO_FOUNDATION_LIBRARY}

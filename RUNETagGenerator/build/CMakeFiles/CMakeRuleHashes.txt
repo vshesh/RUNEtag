@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+e598d072f30a8274b3ec15cc132835f2 CMakeFiles/RUNETagGenerator_autogen
+4846d0e0e17e90ba3192840405eea625 qrc_runetaggenerator.cpp
+261643739b7d2e2774c74c41668fcf47 ui_runetaggenerator.h

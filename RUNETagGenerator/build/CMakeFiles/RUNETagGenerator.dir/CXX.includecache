@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/TagCode.cpp
+TagCode.h
+/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/TagCode.h
+coding.h
+/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/coding.h
+
+/Users/Vishesh/repos/tui-table/tags/RUNEtag/RUNETagGenerator/TagCode.h
+vector
+-
+iostream
+-
+
